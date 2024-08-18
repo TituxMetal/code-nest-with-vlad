@@ -2,6 +2,48 @@
 
 NestJs project made for practice, from the codeWithVlad course.
 
+## Requirements
+
+Runtime:
+
+- Node.js
+
+Database:
+
+- PostgreSQL
+
+OR
+
+- Docker & Docker Compose
+
+```bash
+docker compose up --file ./docker/compose.yaml --detach
+```
+
+### Installation
+
+```bash
+yarn install
+
+# push the prisma schema to the database
+npx prisma db push
+```
+
+### Running the app
+
+In development mode:
+
+```bash
+yarn start:dev
+```
+
+In production mode:
+
+```bash
+yarn build
+yarn start
+```
+
 ## API Usage
 
 ### Signup Route
@@ -54,4 +96,25 @@ curl  -X POST \
 "email": "titux@lgdweb.fr",
 "password": "123456"
 }'
+```
+
+### User Profile Route
+
+- GET `/users/me`
+- Request headers:
+  - Set-Cookie: string
+- Response:
+  - User Object
+    - id: string
+    - email: string
+    - hash: string
+    - createdAt: Date
+    - updatedAt: Date
+- Example:
+
+```bash
+curl  -X GET \
+'http://localhost:3000/users/me' \
+--header 'Accept: */*' \
+--header 'Set-Cookie: connect.sid=$cookieValue; Path=/; HttpOnly'
 ```
