@@ -1,10 +1,13 @@
+import { CacheInterceptor, CacheKey } from '@nestjs/cache-manager'
 import {
   Body,
   Controller,
+  Get,
   HttpCode,
   HttpStatus,
   Post,
-  Session
+  Session,
+  UseInterceptors
 } from '@nestjs/common'
 
 import { AuthService } from './auth.service'
@@ -17,6 +20,13 @@ import { UserSession, UserSessionData } from './types'
 @Controller('auth')
 export class AuthController {
   constructor(private readonly authSerivce: AuthService) {}
+
+  @UseInterceptors(CacheInterceptor)
+  @CacheKey('tesst')
+  @Get('test')
+  test(): string {
+    return 'Test from the auth module!'
+  }
 
   @Post('signup')
   async signup(
