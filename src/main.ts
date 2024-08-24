@@ -11,19 +11,29 @@ const bootstrap = async () => {
   const app = await NestFactory.create<NestExpressApplication>(AppModule)
   const config = app.get(ConfigService)
   const sessionSecret = config.getOrThrow<string>('SESSION_SECRET')
+  const sessionTTL = Number(config.get('SESSION_TTL') || 60000)
+  const redisUrl = config.getOrThrow<string>('REDIS_URL')
 
   const RedisStore = connectRedis(session)
-  const redisClient = createClient({
-    url: config.getOrThrow<string>('REDIS_URL'),
-    legacyMode: true
-  })
+  const redisClient = createClient({ url: redisUrl, legacyMode: true })
 
   app.use(
     session({
       secret: sessionSecret,
       resave: false,
+      rolling: false,
       saveUninitialized: false,
-      store: new RedisStore({ client: redisClient })
+      store: new RedisStore({
+        client: redisClient,
+        ttl: sessionTTL,
+        logErrors: true
+      }),
+      cookie: {
+        secure: false,
+        httpOnly: true,
+        sameSite: 'lax',
+        maxAge: sessionTTL
+      }
     })
   )
 
