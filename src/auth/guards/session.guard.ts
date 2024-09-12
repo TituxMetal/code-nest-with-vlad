@@ -1,12 +1,12 @@
 import {
-  Injectable,
-  UnauthorizedException,
   type CanActivate,
-  type ExecutionContext
+  type ExecutionContext,
+  Injectable,
+  UnauthorizedException
 } from '@nestjs/common'
 import { Reflector } from '@nestjs/core'
-import { type Request } from 'express'
-import { type Observable } from 'rxjs'
+import { Request } from 'express'
+import { Observable } from 'rxjs'
 
 import { IS_PUBLIC_ROUTE } from '~/auth/decorators'
 import { type UserSession } from '~/auth/types'

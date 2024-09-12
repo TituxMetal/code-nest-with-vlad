@@ -1,1 +1,1 @@
-export * from './userSession.type'
+export { UserSession, UserSessionData } from './userSession.type'

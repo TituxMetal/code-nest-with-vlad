@@ -12,9 +12,9 @@ import {
 
 import { AuthService } from './auth.service'
 import { PublicRoute } from './decorators'
-import { AuthDto } from './dto'
+import { type AuthDto } from './dto'
 import { UserEntity } from './entity'
-import { UserSession, UserSessionData } from './types'
+import { type UserSession, type UserSessionData } from './types'
 
 @PublicRoute()
 @Controller('auth')

@@ -1,10 +1,10 @@
 import { ForbiddenException, Injectable } from '@nestjs/common'
-import { User } from '@prisma/client'
+import { type User } from '@prisma/client'
 import * as argon from 'argon2'
 
 import { PrismaService } from '~/prisma'
 
-import { AuthDto } from './dto'
+import { type AuthDto } from './dto'
 
 @Injectable()
 export class AuthService {
