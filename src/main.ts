@@ -1,5 +1,6 @@
+import { ClassSerializerInterceptor } from '@nestjs/common'
 import { ConfigService } from '@nestjs/config'
-import { NestFactory } from '@nestjs/core'
+import { NestFactory, Reflector } from '@nestjs/core'
 import { type NestExpressApplication } from '@nestjs/platform-express'
 import * as connectRedis from 'connect-redis'
 import * as session from 'express-session'
@@ -40,6 +41,8 @@ const bootstrap = async () => {
   await redisClient.connect().catch(error => {
     throw error
   })
+
+  app.useGlobalInterceptors(new ClassSerializerInterceptor(app.get(Reflector)))
 
   await app.listen(3000)
   console.log(`Application is running on: http://localhost:3000`)
