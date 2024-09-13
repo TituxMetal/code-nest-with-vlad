@@ -1,4 +1,5 @@
 import { Exclude } from 'class-transformer'
+import { IsString } from 'class-validator'
 
 export class UserEntity {
   id: string
@@ -6,6 +7,12 @@ export class UserEntity {
 
   @Exclude()
   hash: string
+
+  @IsString()
+  firstName: string
+
+  @IsString()
+  lastName: string
 
   createdAt: Date
   updatedAt: Date
