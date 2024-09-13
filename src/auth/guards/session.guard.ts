@@ -15,13 +15,11 @@ import { type UserSession } from '~/auth/types'
 export class SessionGuard implements CanActivate {
   constructor(private reflector: Reflector) {}
 
-  canActivate(
-    context: ExecutionContext
-  ): boolean | Promise<boolean> | Observable<boolean> {
-    const isPublicRoute = this.reflector.getAllAndOverride<string>(
-      IS_PUBLIC_ROUTE,
-      [context.getHandler(), context.getClass()]
-    )
+  canActivate(context: ExecutionContext): boolean | Promise<boolean> | Observable<boolean> {
+    const isPublicRoute = this.reflector.getAllAndOverride<string>(IS_PUBLIC_ROUTE, [
+      context.getHandler(),
+      context.getClass()
+    ])
 
     if (isPublicRoute) {
       return true

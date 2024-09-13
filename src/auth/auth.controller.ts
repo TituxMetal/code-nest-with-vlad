@@ -1,14 +1,4 @@
-import { CacheInterceptor, CacheKey } from '@nestjs/cache-manager'
-import {
-  Body,
-  Controller,
-  Get,
-  HttpCode,
-  HttpStatus,
-  Post,
-  Session,
-  UseInterceptors
-} from '@nestjs/common'
+import { Body, Controller, HttpCode, HttpStatus, Post, Session } from '@nestjs/common'
 
 import { AuthService } from './auth.service'
 import { PublicRoute } from './decorators'
@@ -21,18 +11,8 @@ import { type UserSession, type UserSessionData } from './types'
 export class AuthController {
   constructor(private readonly authSerivce: AuthService) {}
 
-  @UseInterceptors(CacheInterceptor)
-  @CacheKey('tesst')
-  @Get('test')
-  test(): string {
-    return 'Test from the auth module!'
-  }
-
   @Post('signup')
-  async signup(
-    @Body() authDto: AuthDto,
-    @Session() session: UserSession
-  ): Promise<UserEntity> {
+  async signup(@Body() authDto: AuthDto, @Session() session: UserSession): Promise<UserEntity> {
     const { id, email } = await this.authSerivce.signup(authDto)
 
     this.serializeSession({ id, email }, session)
@@ -42,10 +22,7 @@ export class AuthController {
 
   @HttpCode(HttpStatus.OK)
   @Post('login')
-  async login(
-    @Body() authDto: AuthDto,
-    @Session() session: UserSession
-  ): Promise<UserEntity> {
+  async login(@Body() authDto: AuthDto, @Session() session: UserSession): Promise<UserEntity> {
     const user = await this.authSerivce.login(authDto)
 
     this.serializeSession({ ...user }, session)
@@ -53,10 +30,7 @@ export class AuthController {
     return new UserEntity(user)
   }
 
-  private serializeSession(
-    userData: UserSessionData,
-    session: UserSession
-  ): void {
+  private serializeSession(userData: UserSessionData, session: UserSession): void {
     session.user = { ...userData }
   }
 }
